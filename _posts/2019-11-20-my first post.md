@@ -6,7 +6,7 @@ This is the first post on my site.  It's intended purpose is to get things rolli
 This site is built with Jekyll and hosted on GitHub pages.  I first saw someone using GitHub pages for hosting a blog and thought it was a cool idea.  It's taken me many more hours than first expected to get this up and running but progress has been made!  For anyone else thinking that this might be a good idea then i recommend doing things in this order:
 
 <!-- This is a numbered list-->
-1.  Start with Jekyll locally.  Wait until you understand whats going on and have your initial content sorted before setting up GitHub. Docs for installing Jekyll are available at https://jekyllrb.com/docs/installation/. Followed by a basic guide for getting started at https://jekyllrb.com/docs/step-by-step/01-setup/.  I highly recommend following these two guides to get things set up.
+1.  Start with Jekyll locally.  Wait until you understand whats going on and have your initial content sorted before setting up GitHub. Docs for installing Jekyll are available at <https://jekyllrb.com/docs/installation/>. Followed by a basic guide for getting started at <https://jekyllrb.com/docs/step-by-step/01-setup/>.  I highly recommend following these two guides to get things set up.
     
 1.  Once you have things setup with the above steps get the hang of the Jekyll mark up and look at available themes if you don't want to plod through the process of doing the styling manually.  If you want to make changes to any theme just take the files from the theme repository on GitHub and save them to the appropriate location manually then make your chagnes there, these local files will overwrite the theme files.
 
