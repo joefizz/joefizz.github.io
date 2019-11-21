@@ -1,6 +1,10 @@
 ---
-author: joseph
-title: setting up GitHub page with Jekyll
+layout: post
+title: creating a GitHub page with Jekyll
+subtitle: Attempt number 1
+tags: [jekyll, github, guide]
+comments: true
+author: joefizz
 ---
 This is the first post on my site.  It's intended purpose is to get things rolling and as a place to store all the different bits of code that can be placed in posts to make them look fancy.
 

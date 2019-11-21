@@ -1,16 +1,7 @@
-# frozen_string_literal: true
+source 'https://rubygems.org'
 
-source "https://rubygems.org"
+gem "github-pages", '197', group: :jekyll_plugins
 
-git_source(:github) {|repo_name| "https://github.com/#{repo_name}" }
-
-# gem "rails"
-
-gem "jekyll"
-gem "jekyll-theme-midnight"
-
-group :jekyll_plugins do
-  gem 'jekyll-sitemap'
-  gem 'jekyll-feed'
-  gem 'jekyll-seo-tag'
-end
+# enable tzinfo-data for local build
+# gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]
+gem 'jekyll-paginate'

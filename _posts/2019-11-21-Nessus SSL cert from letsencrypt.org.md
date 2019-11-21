@@ -74,7 +74,7 @@ From experience securing a basic Linux site running on nginx or Apache is relati
     ```
     Followed by starting Nessus up again
     ```
-    systemctl start nessusd
+    $ systemctl start nessusd
     ```
 
 4.  Now all that is left to do is browse to the site and see your classy new certificate!
