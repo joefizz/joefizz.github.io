@@ -1,3 +1,7 @@
+title: nz420
+description: little bits of this and that
+url: https://joefizz.github.io
+
 collections:
   authors:
     output: true
@@ -18,3 +22,6 @@ defaults:
     values:
       layout: "default"
 theme: jekyll-theme-midnight
+
+plugins:
+  - jekyll-feed
