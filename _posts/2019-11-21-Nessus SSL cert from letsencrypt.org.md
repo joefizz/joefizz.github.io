@@ -1,7 +1,7 @@
 ---
 author: joseph
 title: Nessus SSL cert from letsencrypt.org
-tags: nessus, ssl
+tags: [nessus, ssl]
 ---
 
 We have Nessus set up on a cloud hosted server for shared use.  Access to it is restricted by IP address to only allow our VPN connections in so we are relatiely confident on the security of the connection.  However the security pop-up in the browser is annoying and if there's an easy way to fix a problem, you can be sure i'll ignore it until i'm looking for a distraction.

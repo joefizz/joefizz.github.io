@@ -4,7 +4,7 @@ title: Proxmox VE installation on a laptop
 subtitle: Why are there so many things?
 bigimg: /img/computerhelp.jpeg
 tags: [virtualisation, proxmox]
-date: 2019-11-25
+date: 2019-11-26
 ---
 
 {: .box-warning}
