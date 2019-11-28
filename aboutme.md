@@ -4,7 +4,9 @@ title: About me
 subtitle: Why I like elephants
 ---
 
-There are enough hours in the day, I just have more things I want to do than there is time available.  Also i;m kind of lazy and I like watching TV.
+pentester by day.  dreamer by night.
+
+There are enough hours in the day, I just have more things I want to do than there is time available.  Also I'm kind of lazy and I like watching TV.
 
 People often say "I'd love to, but i'm too busy".  What they actually mean is "I have other things that take priority".  Stop lying to yourself about having enough time and start looking at what you're prioritising in your life.
 
