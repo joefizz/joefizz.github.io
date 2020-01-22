@@ -6,9 +6,7 @@ bigimg: /img/powerbook100.jpg
 tags: [linux, kali, touchpad, workspaces, bash]
 date: 2020-01-22
 ---
-## Introduction
-
-I was recently supplied with a neww work laptop and chosen to go with a Linux base OS (specifically Kali 2019.4 in this instance).  I've traditionally always worked from a mac and so enjoy being able to navigate my various workspaces using the touchpad alone hwever with Linux this isn't such a pleasant experience.  I wanted to try and recreate this as best as possible and for now this is wear we've gotten to.
+I was recently supplied with a new work laptop and chosen to go with a Linux base OS (specifically Kali 2019.4 in this instance).  I've traditionally always worked from a mac and so enjoy being able to navigate my various workspaces using the touchpad alone hwever with Linux this isn't such a pleasant experience.  I wanted to try and recreate this as best as possible and for now this is wear we've gotten to.
 
 It's a straightforward multitouch swipe on the touchpad that allows you to switch between multiple horizontal workspaces.  There is no support for vertical workspaces however if you're a psychopath and you use vertical workspaces then it's just a matter of playing around with the script to get it to do what you want.
 
