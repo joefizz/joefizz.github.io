@@ -27,7 +27,7 @@ This guide is for Debian flavours of Linux.  That's not to say that it won't wor
 First we need to install the pre-requisites
 
 ```
-sudo sudo apt install python3 python3-setuptools xdotool python3-gi libinput-tools python-gobject wmctrl
+sudo sudo apt install python3 python3-setuptools xdotool python3-gi libinput-tools python-gobject wmctrl bc
 ```
 
 We also need to make sure that our current user is a member of the `input` group
