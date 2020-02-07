@@ -1,0 +1,105 @@
+{
+  "name": "",
+  "isOrdered": true,
+  "folders": {
+    "_authors": {
+      "name": "_authors",
+      "isOrdered": true,
+      "folders": {},
+      "files": {}
+    },
+    "_data": {
+      "name": "_data",
+      "isOrdered": true,
+      "folders": {},
+      "files": {}
+    },
+    "_drafts": {
+      "name": "_drafts",
+      "isOrdered": true,
+      "folders": {},
+      "files": {
+        "2019-11-19-markdown cheatsheet": 0,
+        "2015-02-28-test-markdown": 1,
+        "blank post": 2,
+        "crest cct-inf exam": 3,
+        "ESXi on non-supported host": 4,
+        "the power of mitm6 and mtlmrelayx": 5,
+        "2020-01-29-Linux-encrypted-backup-to-bootable-SD-card": 6
+      }
+    },
+    "_includes": {
+      "name": "_includes",
+      "isOrdered": true,
+      "folders": {},
+      "files": {}
+    },
+    "_layouts": {
+      "name": "_layouts",
+      "isOrdered": true,
+      "folders": {},
+      "files": {}
+    },
+    "_posts": {
+      "name": "_posts",
+      "isOrdered": true,
+      "folders": {},
+      "files": {
+        "2019-11-20-my first post - setting up Jekyll on GitHub pages": 0,
+        "2015-02-26-flake-it-till-you-make-it": 1,
+        "2019-11-21-Nessus SSL cert from letsencrypt.org": 2,
+        "2019-11-26-Proxmox VE installation on a laptop": 3,
+        "2019-11-28-Proxtop Pentest Lap Part 0 - Initial Configuration": 4,
+        "2019-11-29-Proxtop Pentest Lab Part 1 - Windows 2016 Server": 5,
+        "2019-12-04-Proxmox Pentest Lab Part 2 - Windows 10 Clients": 6,
+        "2019-12-05-Proxtop Part 3 - Kali VM Setup": 7,
+        "2020-01-22-linux-change-workspace-with-touchpad": 8
+      }
+    },
+    "_sass": {
+      "name": "_sass",
+      "isOrdered": true,
+      "folders": {},
+      "files": {}
+    },
+    "_site": {
+      "name": "_site",
+      "isOrdered": true,
+      "folders": {},
+      "files": {}
+    },
+    "assets": {
+      "name": "assets",
+      "isOrdered": true,
+      "folders": {},
+      "files": {}
+    },
+    "css": {
+      "name": "css",
+      "isOrdered": true,
+      "folders": {},
+      "files": {}
+    },
+    "docs": {
+      "name": "docs",
+      "isOrdered": true,
+      "folders": {},
+      "files": {}
+    },
+    "img": {
+      "name": "img",
+      "isOrdered": true,
+      "folders": {},
+      "files": {}
+    },
+    "js": {
+      "name": "js",
+      "isOrdered": true,
+      "folders": {},
+      "files": {}
+    }
+  },
+  "files": {
+    "aboutme": 0
+  }
+}
