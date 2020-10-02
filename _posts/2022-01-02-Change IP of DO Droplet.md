@@ -4,7 +4,7 @@ title: Changing the public IP of a Digital Ocean Droplet
 subtitle: they'll never catch you now!
 bigimg: /img/hiding.png
 tags: [network, ipv4, digitalocean, pentest, droplet]
-date: 2020-10-01
+date: 2020-10-02
 ---
 
 ## Introduction
