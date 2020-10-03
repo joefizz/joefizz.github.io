@@ -7,8 +7,6 @@ tags: [network, ipv4, digitalocean, pentest, droplet]
 date: 2020-10-02
 ---
 
-## Introduction
-
 Sometimes it's necessary to change the public IP address of a cloud deployed system.  I had need to do that recently and wanted to be able to do it again on a regular basis, here we go.
 
 I recently moved a script that I regularly use from AWS to DO for cost saving. The script calls other scripts that pull subdomain info for various root domains.  After migrating the script and running it for the first time in DO I noticed that I was getting a lot more results than expected...  I went through some troubleshooting steps thinking I must've missed something and was getting historic results, but no, these were valid results.
