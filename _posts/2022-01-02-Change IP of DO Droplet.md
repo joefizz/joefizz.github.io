@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Changing the public IP of a Digital Ocean Droplet
+title: Automatically Changing the Public IP of a Digital Ocean Droplet
 subtitle: they'll never catch you now!
 bigimg: /img/hiding.png
 tags: [network, ipv4, digitalocean, pentest, droplet]
@@ -11,16 +11,16 @@ date: 2020-10-02
 
 Sometimes it's necessary to change the public IP address of a cloud deployed system.  I had need to do that recently and wanted to be able to do it again on a regular basis, here we go.
 
-I recently moved a script that I regularly use from AWS to DO for cost saving. The script calls others cripts that pull subdomain info for various root domains.  After migrating the script and running it for the first time in DO I noticed that I was getting a lot more results than expected...  I went through some troubleshooting steps thinking I must've missed something and was getting historic results, but no, these were valid results.
+I recently moved a script that I regularly use from AWS to DO for cost saving. The script calls other scripts that pull subdomain info for various root domains.  After migrating the script and running it for the first time in DO I noticed that I was getting a lot more results than expected...  I went through some troubleshooting steps thinking I must've missed something and was getting historic results, but no, these were valid results.
 
-So my first thought (and so far my only thought) is that due to me being on a new IP after moving from AWS then a lot of the sources i;m using for searching for subdomains are letting me back after flaggin my previous IP address.  I have no logs or reports saying that my IP has been blocked anywhere, but this is my running theory.
+So my first thought (and so far my only thought) is that due to me being on a new IP after moving from AWS then a lot of the sources i'm using for searching for subdomains are letting me back after flagging my previous IP address.  I have no logs or reports saying that my IP has been blocked anywhere, but this is my running theory.
 
 ## Step 1 - The setup
 
-Digital Ocean uses a Ruby thing for API calls.  I tend to try and avoid Ruby where I can (he says while using Ruby to host this blog) however there isn't much I can do abotu that.
+Digital Ocean uses a Ruby thing for API calls (I found out half-way through that they also have a normal API).  I tend to try and avoid Ruby where I can (he says while using Ruby to host this blog) however there isn't much I can do about that.
 
 ### Ruby Install
-Ensure Ruby is installed on the host from where we will be runnign this script (Ubuntu 20.04):
+Ensure Ruby is installed on the host from where we will be running this script (Ubuntu 20.04):
 
 `sudo apt install ruby-full`
 
