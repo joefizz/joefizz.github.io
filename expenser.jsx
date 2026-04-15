@@ -1,20 +1,12 @@
 const { useState } = React;
 
 const QUESTIONS = {
-  payer: {
-    id: "payer",
-    text: "Who is paying for this meal?",
+  reimbursed: {
+    id: "reimbursed",
+    text: "Was this meal paid by the business, or will the business reimburse you?",
     options: [
-      { label: "The company pays or reimburses me", value: "company" },
-      { label: "I'm paying personally — not through the business", value: "personal" },
-    ],
-  },
-  entity: {
-    id: "entity",
-    text: "What type of business is this?",
-    options: [
-      { label: "A company (Ltd) — I'm a director/shareholder", value: "company_entity" },
-      { label: "Sole trader or partnership", value: "sole_trader" },
+      { label: "The business pays directly", value: "company_paid" },
+      { label: "I paid and the business will reimburse me", value: "will_reimburse" },
     ],
   },
   who: {
@@ -56,14 +48,6 @@ const QUESTIONS = {
       { label: "Regular — weekly or more often", value: "regular" },
     ],
   },
-  reimbursed: {
-    id: "reimbursed",
-    text: "Are you being reimbursed for a personally-paid meal, or is the business just not involved?",
-    options: [
-      { label: "I paid and the business will reimburse me", value: "will_reimburse" },
-      { label: "I paid personally and the business is not involved at all", value: "purely_personal" },
-    ],
-  },
   staff_function_size: {
     id: "staff_function_size",
     text: "Is this staff function open to all employees?",
@@ -75,16 +59,8 @@ const QUESTIONS = {
 };
 
 function getFlow(answers) {
-  const flow = ["payer"];
-  if (!answers.payer) return flow;
-
-  if (answers.payer === "personal") {
-    flow.push("reimbursed");
-    return flow;
-  }
-
-  flow.push("entity");
-  if (!answers.entity) return flow;
+  const flow = ["reimbursed"];
+  if (!answers.reimbursed) return flow;
 
   flow.push("who");
   if (!answers.who) return flow;
@@ -116,35 +92,7 @@ function getFlow(answers) {
 }
 
 function getResult(answers) {
-  const { payer, reimbursed, entity, who, purpose, location, pattern, staff_function_size } = answers;
-
-  // Purely personal
-  if (payer === "personal" && reimbursed === "purely_personal") {
-    return {
-      verdict: "no",
-      title: "Not a business expense",
-      summary: "You paid personally and the business isn't involved. There's nothing to claim and no FBT to worry about.",
-      deductibility: "No deduction available",
-      fbt: "No FBT",
-      cost: null,
-      risk: null,
-      tags: [{ label: "Private expense", type: "grey" }],
-    };
-  }
-
-  // Personal but will be reimbursed — treat as company-paid
-  if (payer === "personal" && reimbursed === "will_reimburse") {
-    return {
-      verdict: "info",
-      title: "Reimbursement = company-paid",
-      summary: "Once the business reimburses you, this is treated the same as the company paying directly. The tax rules below will apply based on who attended and why — run this tool again selecting 'the company pays' to get the correct result.",
-      deductibility: "Depends on the meal circumstances",
-      fbt: "Depends on the meal circumstances",
-      cost: null,
-      risk: null,
-      tags: [{ label: "Re-run as company-paid", type: "gold" }],
-    };
-  }
+  const { reimbursed, who, purpose, location, pattern, staff_function_size } = answers;
 
   // Overnight travel
   if (purpose === "travel") {
@@ -337,9 +285,7 @@ function App() {
 
   const flow = getFlow(answers);
   const currentQId = flow[flow.length - 1];
-  const isComplete = answers[currentQId] !== undefined || 
-    (answers.payer === "personal" && answers.reimbursed !== undefined) ||
-    (answers.purpose === "travel" && answers.entity !== undefined && answers.who !== undefined);
+  const isComplete = answers[currentQId] !== undefined;
 
   const isDone = isComplete && answers[currentQId] !== undefined;
 
