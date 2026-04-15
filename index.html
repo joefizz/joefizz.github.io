@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>joefizz.github.io</title>
+    <link rel="icon" href="4306032.jpg" type="image/jpeg" />
     <style>
       body {
         margin: 0;
@@ -26,6 +27,22 @@
         border-radius: 14px;
         box-shadow: 0 18px 45px rgba(0, 0, 0, 0.08);
         padding: 32px;
+      }
+      .logo-wrap {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 24px;
+      }
+      .logo-link {
+        display: inline-flex;
+        border-radius: 18px;
+        overflow: hidden;
+      }
+      .logo {
+        max-width: 116px;
+        max-height: 116px;
+        object-fit: cover;
+        display: block;
       }
       h1 {
         margin: 0 0 14px;
@@ -65,6 +82,11 @@
   <body>
     <div class="page">
       <div class="card">
+        <div class="logo-wrap">
+          <a class="logo-link" href="index.html">
+            <img class="logo" src="4306032.jpg" alt="Site logo" />
+          </a>
+        </div>
         <h1>joefizz.github.io</h1>
         <p>Open any browser app hosted in this repository.</p>
         <div id="app-links" class="link-list"></div>
