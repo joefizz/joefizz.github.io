@@ -59,10 +59,12 @@ function getFlow(answers) {
 
   if (answers.purpose === "travel") return flow;
 
-  if (answers.purpose === "staff_function") {
+  if (answers.purpose === "staff_function" && answers.who === "staff") {
     flow.push("staff_function_size");
     if (!answers.staff_function_size) return flow;
-    flow.push("pattern");
+    if (shouldAskPattern(answers)) {
+      flow.push("pattern");
+    }
     return flow;
   }
 
@@ -76,8 +78,30 @@ function getFlow(answers) {
     if (!answers.location) return flow;
   }
 
-  flow.push("pattern");
+  if (shouldAskPattern(answers)) {
+    flow.push("pattern");
+  }
   return flow;
+}
+
+function shouldAskPattern(answers) {
+  const { who, purpose, location, staff_function_size } = answers;
+  if (purpose === "travel") return false;
+  if (purpose === "staff_function" && who === "staff") {
+    return staff_function_size === "all_staff";
+  }
+  if (who === "solo" && purpose === "social") return true;
+  if (who === "staff" && location !== "office") return true;
+  return false;
+}
+
+function getQuestionOptions(qId, answers) {
+  if (qId === "purpose") {
+    if (answers.who !== "staff") {
+      return QUESTIONS.purpose.options.filter(opt => opt.value !== "staff_function");
+    }
+  }
+  return QUESTIONS[qId].options;
 }
 
 function getResult(answers) {
@@ -375,7 +399,7 @@ function App() {
             {QUESTIONS[nextQId].text}
           </p>
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-            {QUESTIONS[nextQId].options.map((opt, i) => (
+            {getQuestionOptions(nextQId, answers).map((opt, i) => (
               <button
                 key={opt.value}
                 onClick={() => answer(nextQId, opt.value)}
