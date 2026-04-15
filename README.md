@@ -5,6 +5,7 @@ This repository hosts simple browser tools for `joefizz.github.io`.
 ## Available tools
 
 - [Meal Expense Checker](./expenser.html)
+- [Commands Repo](./commands.html)
 
 ## Notes
 

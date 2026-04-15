@@ -3,5 +3,10 @@
     "title": "Meal Expense Checker",
     "url": "expenser.html",
     "description": "A quick tool for working out whether a meal is deductible and whether FBT applies."
+  },
+  {
+    "title": "Commands Repo",
+    "url": "commands.html",
+    "description": "Shortcut to your frequently used commands repository on GitHub."
   }
 ]
