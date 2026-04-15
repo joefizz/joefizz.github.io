@@ -1,14 +1,6 @@
 const { useState } = React;
 
 const QUESTIONS = {
-  reimbursed: {
-    id: "reimbursed",
-    text: "Was this meal paid by the business, or will the business reimburse you?",
-    options: [
-      { label: "The business pays directly", value: "company_paid" },
-      { label: "I paid and the business will reimburse me", value: "will_reimburse" },
-    ],
-  },
   who: {
     id: "who",
     text: "Who was at the meal?",
@@ -59,10 +51,7 @@ const QUESTIONS = {
 };
 
 function getFlow(answers) {
-  const flow = ["reimbursed"];
-  if (!answers.reimbursed) return flow;
-
-  flow.push("who");
+  const flow = ["who"];
   if (!answers.who) return flow;
 
   flow.push("purpose");
@@ -92,7 +81,7 @@ function getFlow(answers) {
 }
 
 function getResult(answers) {
-  const { reimbursed, who, purpose, location, pattern, staff_function_size } = answers;
+  const { who, purpose, location, pattern, staff_function_size } = answers;
 
   // Overnight travel
   if (purpose === "travel") {
