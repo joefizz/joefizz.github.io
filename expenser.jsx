@@ -1,4 +1,4 @@
-import { useState } from "react";
+const { useState } = React;
 
 const QUESTIONS = {
   payer: {
@@ -332,7 +332,7 @@ const TAG_STYLES = {
   blue:  { bg: "#e8eef8", color: "#4a6fa5" },
 };
 
-export default function App() {
+function App() {
   const [answers, setAnswers] = useState({});
 
   const flow = getFlow(answers);
@@ -561,3 +561,6 @@ export default function App() {
     </div>
   );
 }
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<App />);
