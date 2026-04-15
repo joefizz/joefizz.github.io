@@ -66,11 +66,45 @@
     <div class="page">
       <div class="card">
         <h1>joefizz.github.io</h1>
-        <p>Links to the browser apps hosted in this repository.</p>
-        <div class="link-list">
-          <a class="link-card" href="expenser.html">Meal Expense Checker</a>
-        </div>
-        <div class="meta">Add more tools by creating new pages and linking them here.</div>
+        <p>Open any browser app hosted in this repository.</p>
+        <div id="app-links" class="link-list"></div>
+        <div id="app-empty" class="meta">Loading apps…</div>
+        <div class="meta">Add new tools by creating new pages and listing them in <code>apps.json</code>.</div>
+      </div>
+    </div>
+    <script>
+      const appLinks = document.getElementById('app-links');
+      const appEmpty = document.getElementById('app-empty');
+
+      fetch('apps.json')
+        .then(response => {
+          if (!response.ok) throw new Error('Apps file not found');
+          return response.json();
+        })
+        .then(apps => {
+          if (!Array.isArray(apps) || apps.length === 0) {
+            appEmpty.textContent = 'No apps found. Add entries to apps.json.';
+            return;
+          }
+
+          appEmpty.style.display = 'none';
+          apps.forEach(app => {
+            const link = document.createElement('a');
+            link.className = 'link-card';
+            link.href = app.url || '#';
+            link.innerHTML = `
+              <strong>${app.title}</strong>
+              ${app.description ? `<span>${app.description}</span>` : ''}
+            `;
+            appLinks.appendChild(link);
+          });
+        })
+        .catch(() => {
+          appEmpty.textContent = 'Could not load the apps list. Check apps.json.';
+        });
+    </script>
+  </body>
+</html>
       </div>
     </div>
   </body>

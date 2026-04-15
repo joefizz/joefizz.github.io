@@ -9,4 +9,5 @@ This repository hosts simple browser tools for `joefizz.github.io`.
 ## Notes
 
 - If you are using GitHub Pages, the site entry point is `index.html`.
-- Add more `.html` pages for additional tools.
+- The landing page loads its list from `apps.json`.
+- Add more apps by creating new `.html` pages and adding entries to `apps.json`.
