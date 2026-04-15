@@ -3,14 +3,75 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Meal Expense Checker</title>
+    <title>joefizz.github.io</title>
+    <style>
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f5f0e8;
+        color: #1a1a18;
+        font-family: Inter, system-ui, sans-serif;
+      }
+      .page {
+        max-width: 640px;
+        width: 100%;
+        padding: 36px;
+      }
+      .card {
+        background: white;
+        border: 1px solid #d8d2c4;
+        border-radius: 14px;
+        box-shadow: 0 18px 45px rgba(0, 0, 0, 0.08);
+        padding: 32px;
+      }
+      h1 {
+        margin: 0 0 14px;
+        font-size: clamp(2rem, 4vw, 3rem);
+        line-height: 1.05;
+      }
+      p {
+        margin: 0 0 22px;
+        color: #57514a;
+        line-height: 1.7;
+      }
+      .link-list {
+        display: grid;
+        gap: 12px;
+      }
+      .link-card {
+        display: block;
+        padding: 16px 18px;
+        background: #f7f2ea;
+        border: 1px solid #e4d9c8;
+        border-radius: 10px;
+        color: #1a1a18;
+        text-decoration: none;
+        transition: transform 0.18s ease, border-color 0.18s ease;
+      }
+      .link-card:hover {
+        transform: translateY(-1px);
+        border-color: #c84b2f;
+      }
+      .meta {
+        margin-top: 26px;
+        color: #7a7468;
+        font-size: 0.92rem;
+      }
+    </style>
   </head>
-  <body style="margin:0; background:#f5f0e8;">
-    <div id="root"></div>
-
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script type="text/babel" src="expenser.jsx"></script>
+  <body>
+    <div class="page">
+      <div class="card">
+        <h1>Welcome to joefizz.github.io</h1>
+        <p>Here are the tools currently available. Click any link to open the live web app in this repository.</p>
+        <div class="link-list">
+          <a class="link-card" href="expenser.html">Meal Expense Checker</a>
+        </div>
+        <div class="meta">More tools coming soon — add more pages as you build them.</div>
+      </div>
+    </div>
   </body>
 </html>
