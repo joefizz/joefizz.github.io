@@ -14,9 +14,9 @@ const QUESTIONS = {
     id: "item",
     text: "What kind of consumable expense is it?",
     options: [
-      { label: "Light refreshment, coffee, tea, snack, or soft drink", value: "light" },
+      { label: "Light refreshment, coffee, tea, snack, or non-alcoholic drink", value: "light" },
       { label: "Meal or substantial food", value: "meal" },
-      { label: "Alcohol or drinks at a social setting", value: "alcohol" },
+      { label: "Alcoholic drink, wine, beer, spirits, or bar tab", value: "alcohol" },
       { label: "Food or drink gift, hamper, voucher, or reward", value: "gift" },
       { label: "Catering or food supplied for a group", value: "catering" },
     ],
