@@ -32,6 +32,16 @@ const QUESTIONS = {
       { label: "The public or visitors at a trade display/open event", value: "public" },
     ],
   },
+  associates: {
+    id: "associates",
+    text: "Were any family members, partners, or associated people included?",
+    options: [
+      { label: "No, only business participants", value: "none" },
+      { label: "Yes, family or partners of staff, directors, or shareholders", value: "staff_family" },
+      { label: "Yes, family or partners of clients or business contacts", value: "contact_family" },
+      { label: "Yes, a mix of family or associated people", value: "mixed_family" },
+    ],
+  },
   setting: {
     id: "setting",
     text: "What was the real setting?",
@@ -86,7 +96,7 @@ const SOURCE_LINKS = [
 ];
 
 function getFlow(answers) {
-  const flow = ["entity", "item", "who", "setting", "evidence"];
+  const flow = ["entity", "item", "who", "associates", "setting", "evidence"];
   return flow.slice(0, flow.findIndex(id => answers[id] === undefined) + 1 || flow.length);
 }
 
@@ -122,6 +132,32 @@ function recordRisk(evidence) {
   return "High record risk: without reliable records, even a technically deductible expense can be hard to defend.";
 }
 
+function associationNotes(associates, setting) {
+  if (associates === "none") return null;
+  if (setting === "public_promo") {
+    return {
+      improve: "Family or associated people are less of a problem where the public genuinely had equal access. Keep evidence that insiders did not receive better access than the public.",
+      fbt: "FBT is less likely where the benefit is genuinely public promotional entertainment, not an employee-only or associate-only benefit.",
+      evidence: "Record any family/associated attendees and keep proof the public could access the same food or drink on the same terms.",
+      tag: { label: "Public access", type: "green" },
+    };
+  }
+  if (associates === "contact_family") {
+    return {
+      improve: "Client or contact family can still be business entertainment, but the commercial purpose needs to be real. Keep the business attendee names and apportion anything that is clearly private or excessive.",
+      fbt: "No FBT for non-employee client/contact family, but associated-person and private-benefit facts still matter.",
+      evidence: "Record family/partner attendees separately from the business contact, and note why their attendance was connected to the business purpose.",
+      tag: { label: "Contact family", type: "gold" },
+    };
+  }
+  return {
+    improve: "For family or partners of staff, directors, or shareholders, apportion private attendees unless they are genuinely part of a staff function or public/open event. A director's family portion is especially hard to defend as business unless the facts are strong.",
+    fbt: "FBT risk increases where a benefit is provided to an employee's or shareholder-employee's associate, including a partner or family member.",
+    evidence: "Record all associated-person attendees by name and relationship, then split private, employee-associate, client, and public portions on a reasonable basis.",
+    tag: { label: "Apportion family", type: "red" },
+  };
+}
+
 function result({
   verdict,
   title,
@@ -149,16 +185,26 @@ function result({
 }
 
 function getResult(answers) {
-  const { entity, item, who, setting, evidence } = answers;
+  const { entity, item, who, associates, setting, evidence } = answers;
   const isSelfEmployed = entity === "self_employed";
   const hasEmployees = who === "staff" || who === "mixed";
   const hasContacts = who === "contacts" || who === "mixed";
   const isLight = item === "light";
   const isGift = item === "gift";
-  const isAlcohol = item === "alcohol";
+  const assoc = associationNotes(associates, setting);
+  function finalize(base) {
+    if (!assoc) return result(base);
+    return result({
+      ...base,
+      fbt: `${base.fbt} ${assoc.fbt}`,
+      improve: `${base.improve} ${assoc.improve}`,
+      evidence: `${base.evidence} ${assoc.evidence}`,
+      tags: [...base.tags, assoc.tag],
+    });
+  }
 
   if (setting === "personal") {
-    return result({
+    return finalize({
       verdict: "no",
       title: "Do not claim it as a company expense",
       summary: "If the expense is private, social, convenient, or not connected to earning business income, it should not be deducted just because the business card paid for it.",
@@ -174,7 +220,7 @@ function getResult(answers) {
 
   if (setting === "travel") {
     if (hasContacts || setting === "staff_social") {
-      return result({
+      return finalize({
         verdict: "half",
         title: "Business travel with entertainment: 50% claimable",
         summary: "Food and drink while travelling for business is normally fully deductible, but IRD reduces it to 50% when the meal involves an existing or potential business contact, or is a celebration or similar non-working occasion.",
@@ -188,7 +234,7 @@ function getResult(answers) {
       });
     }
 
-    return result({
+    return finalize({
       verdict: "yes",
       title: "Business travel consumable: 100% claimable",
       summary: "An employee's meal or drink while travelling on business is treated as completely business related, unless it becomes client entertainment or a celebration.",
@@ -203,7 +249,7 @@ function getResult(answers) {
   }
 
   if (setting === "conference_long") {
-    return result({
+    return finalize({
       verdict: "yes",
       title: "Training or conference consumable: 100% claimable",
       summary: "Food and drink at a conference, education course, or similar event lasting at least 4 consecutive hours is 100% deductible, unless the event is mainly entertainment.",
@@ -219,7 +265,7 @@ function getResult(answers) {
 
   if (setting === "conference_short") {
     if (isLight) {
-      return result({
+      return finalize({
         verdict: "yes",
         title: "Light refreshments are usually 100% claimable",
         summary: "IRD treats light refreshments, such as morning or afternoon tea, more favourably than substantial meals. They can be 100% deductible even where the event is shorter than 4 hours.",
@@ -233,7 +279,7 @@ function getResult(answers) {
       });
     }
 
-    return result({
+    return finalize({
       verdict: "half",
       title: "Short-event food or drink: usually 50% claimable",
       summary: "A substantial meal or social drink connected with a short event usually falls back into the food-and-drink entertainment rules unless another 100% exception applies.",
@@ -249,7 +295,7 @@ function getResult(answers) {
 
   if (setting === "premises_work") {
     if (isLight) {
-      return result({
+      return finalize({
         verdict: "yes",
         title: "On-premises light refreshment: 100% claimable",
         summary: "Light refreshments provided at work, such as coffee, tea, biscuits, fruit, or morning/afternoon tea, are 100% deductible.",
@@ -264,7 +310,7 @@ function getResult(answers) {
     }
 
     if (who === "staff" || who === "mixed") {
-      return result({
+      return finalize({
         verdict: "half",
         title: "Food at work: 50% unless a specific 100% rule applies",
         summary: "Food and drink at business premises is only 50% deductible when it is a social event or supplied in a senior/restricted dining area, except for light refreshments or light meals consumed as part of duties.",
@@ -280,7 +326,7 @@ function getResult(answers) {
   }
 
   if (setting === "staff_social") {
-    return result({
+    return finalize({
       verdict: "half",
       title: "Staff function or social consumables: 50% claimable",
       summary: "Food and drink for staff social events, celebrations, parties, or team functions has a significant private element, so the entertainment rules generally limit the deduction to 50%.",
@@ -297,7 +343,7 @@ function getResult(answers) {
   if (setting === "offsite_business") {
     if (isGift && who !== "solo") {
       if (hasEmployees) {
-        return result({
+        return finalize({
           verdict: "yes",
           title: "Employee reward: 100% deductible, FBT may apply",
           summary: "A reward, voucher, hamper, or choice-based benefit received by an employee because of their work is generally deductible to the business, but it can be an unclassified fringe benefit.",
@@ -311,7 +357,7 @@ function getResult(answers) {
         });
       }
 
-      return result({
+      return finalize({
         verdict: "half",
         title: "Food or drink gift to contacts: 50% claimable",
         summary: "Food and drink gifts that benefit the business but are enjoyed privately by the recipient are generally only 50% deductible.",
@@ -327,7 +373,7 @@ function getResult(answers) {
 
     if (who === "solo") {
       if (isSelfEmployed) {
-        return result({
+        return finalize({
           verdict: "no",
           title: "Own food or drink: usually not claimable",
           summary: "For self-employed people and look-through company owners, your own meals are usually private. A narrow exception can apply for extra costs caused by remote locations or unusual hours.",
@@ -341,7 +387,7 @@ function getResult(answers) {
         });
       }
 
-      return result({
+      return finalize({
         verdict: "info",
         title: "Solo local consumable: only claim if it fits a work exception",
         summary: "A solo coffee, drink, or meal during an ordinary work day is weak as a company claim unless it is part of business travel, a qualifying training/conference event, an allowance/reimbursement exemption, or genuinely light refreshments provided by the employer.",
@@ -355,7 +401,7 @@ function getResult(answers) {
       });
     }
 
-    return result({
+    return finalize({
       verdict: "half",
       title: "Offsite business entertainment: 50% claimable",
       summary: "Food and drink away from business premises for clients, suppliers, prospects, or staff is generally business entertainment with a significant private element.",
@@ -370,7 +416,7 @@ function getResult(answers) {
   }
 
   if (setting === "public_promo") {
-    return result({
+    return finalize({
       verdict: "yes",
       title: "Public promotion consumables: usually 100% claimable",
       summary: "Entertainment that promotes your business to the public can be 100% deductible if the public has the same opportunity to enjoy it as employees, contacts, or associated people.",
@@ -386,7 +432,7 @@ function getResult(answers) {
 
   if (setting === "reward" || isGift) {
     if (hasEmployees || who === "solo") {
-      return result({
+      return finalize({
         verdict: "yes",
         title: "Employee reward: 100% deductible, FBT may apply",
         summary: "A reward, voucher, hamper, or choice-based benefit received by an employee because of their work is generally deductible to the business, but it can be an unclassified fringe benefit.",
@@ -400,7 +446,7 @@ function getResult(answers) {
       });
     }
 
-    return result({
+    return finalize({
       verdict: "half",
       title: "Food or drink gift to contacts: 50% claimable",
       summary: "Food and drink gifts that benefit the business but are enjoyed privately by the recipient are generally only 50% deductible.",
@@ -414,7 +460,7 @@ function getResult(answers) {
     });
   }
 
-  return result({
+  return finalize({
     verdict: "info",
     title: "Needs apportionment or advice",
     summary: "This fact pattern does not fit one clean bucket. Split the receipt between 100%, 50%, and non-claimable parts where possible.",
@@ -450,7 +496,7 @@ function App() {
   const completedSteps = flow.filter(qId => answers[qId] !== undefined);
   const nextQId = flow.find(qId => answers[qId] === undefined);
   const resultData = nextQId === undefined ? getResult(answers) : null;
-  const totalEstimate = 5;
+  const totalEstimate = 6;
   const progress = resultData ? 100 : Math.round((completedSteps.length / totalEstimate) * 100);
 
   function answer(qId, value) {
