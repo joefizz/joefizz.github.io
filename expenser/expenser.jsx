@@ -105,10 +105,12 @@ function getQuestionOptions(qId, answers) {
 
   const all = QUESTIONS.setting.options;
   if (answers.item === "gift") {
-    return all.filter(opt => ["reward", "offsite_business", "public_promo", "personal"].includes(opt.value));
+    const giftSettings = ["reward", "offsite_business", "personal"];
+    if (answers.who === "public") giftSettings.push("public_promo");
+    return all.filter(opt => giftSettings.includes(opt.value));
   }
   if (answers.who === "public") {
-    return all.filter(opt => ["public_promo", "conference_long", "conference_short", "personal"].includes(opt.value));
+    return all.filter(opt => ["public_promo", "personal"].includes(opt.value));
   }
   if (answers.who === "solo") {
     return all.filter(opt => !["staff_social", "public_promo", "reward"].includes(opt.value));
@@ -193,14 +195,21 @@ function getResult(answers) {
   const isGift = item === "gift";
   const assoc = associationNotes(associates, setting);
   function finalize(base) {
-    if (!assoc) return result(base);
-    return result({
+    const merged = !assoc ? base : {
       ...base,
       fbt: `${base.fbt} ${assoc.fbt}`,
       improve: `${base.improve} ${assoc.improve}`,
       evidence: `${base.evidence} ${assoc.evidence}`,
       tags: [...base.tags, assoc.tag],
-    });
+    };
+    if (entity === "unknown") {
+      return result({
+        ...merged,
+        summary: `${merged.summary} Note: result assumes a company or employee structure — revisit if you are self-employed or in a look-through company.`,
+        tags: [...merged.tags, { label: "Entity unclear", type: "blue" }],
+      });
+    }
+    return result(merged);
   }
 
   if (setting === "personal") {
@@ -219,7 +228,7 @@ function getResult(answers) {
   }
 
   if (setting === "travel") {
-    if (hasContacts || setting === "staff_social") {
+    if (hasContacts) {
       return finalize({
         verdict: "half",
         title: "Business travel with entertainment: 50% claimable",
@@ -323,6 +332,21 @@ function getResult(answers) {
         tags: [percentTag(50), { label: "GST 50%", type: "gold" }, { label: "FBT usually no", type: "green" }],
       });
     }
+
+    if (who === "solo") {
+      return finalize({
+        verdict: "half",
+        title: "Solo meal at premises: 50% if connected to duties",
+        summary: "A non-light meal consumed alone at business premises is generally treated as 50% business entertainment, but IRD can challenge a solo meal as private if there is no real connection to earning income.",
+        deduction: "Usually 50% income-tax deduction if genuinely work-related. If it is a convenience meal with no clear business purpose, treat it as private (0%).",
+        gst: "Net 50% GST after the annual entertainment adjustment if the 50% deduction applies; no GST if treated as private.",
+        fbt: "No FBT where the meal is consumed as part of work duties. FBT or PAYE may arise if it is a regular private benefit provided to a shareholder-employee.",
+        improve: "Keep it genuinely work-connected: a working lunch at your desk or a meal tied to specific duties. A routine convenience meal is harder to defend than a genuine light refreshment.",
+        evidence: recordRisk(evidence),
+        basis: "IRD IR268: light refreshments at work are 100%; other food and drink is generally 50% or private depending on the facts.",
+        tags: [percentTag(50), { label: "GST 50%", type: "gold" }, { label: "Private risk", type: "gold" }],
+      });
+    }
   }
 
   if (setting === "staff_social") {
@@ -342,6 +366,21 @@ function getResult(answers) {
 
   if (setting === "offsite_business") {
     if (isGift && who !== "solo") {
+      if (who === "mixed") {
+        return finalize({
+          verdict: "info",
+          title: "Gift to staff and contacts: apportion",
+          summary: "Where a gift, hamper, or voucher is provided to a mix of employees and non-employee contacts, the employee and contact portions must be split and treated separately.",
+          deduction: "Employee portion: 100% income-tax deduction. Client/contact portion: 50% income-tax deduction.",
+          gst: "GST follows the split: 100% for the employee portion; net 50% for the contact portion after the annual entertainment adjustment.",
+          fbt: "FBT may apply to the employee portion. The single FBT rate is 63.93%; small unclassified-benefit thresholds may remove FBT if the per-employee and annual limits are not exceeded. No FBT for non-employee contacts.",
+          improve: "Where possible, give separate gifts to employees and contacts so each can be coded correctly. Where that is not practical, split on a headcount or value basis and keep the calculation on file.",
+          evidence: recordRisk(evidence),
+          basis: "IRD IR268: employee rewards are 100% and FBT-relevant; food and drink gifts to contacts are 50%. Mixed-recipient expenses must be apportioned.",
+          tags: [{ label: "Apportion", type: "blue" }, { label: "FBT employee portion", type: "gold" }, { label: "GST split", type: "gold" }],
+        });
+      }
+
       if (hasEmployees) {
         return finalize({
           verdict: "yes",
